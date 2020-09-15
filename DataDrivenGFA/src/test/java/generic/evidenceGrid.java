@@ -40,7 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.openqa.selenium.remote.RemoteWebDriver;
 /**
  *
- * @author TestingIT
+ * @author Leonardo Daniel Aguilar Gutiérrez
  */
 public class evidenceGrid {
     

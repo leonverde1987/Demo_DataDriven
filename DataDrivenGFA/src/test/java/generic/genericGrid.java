@@ -40,9 +40,10 @@ public class genericGrid extends evidenceGrid {
     */
     
     /***
-     * En este método abrimos el properties de configuración del proyecto debe estar en la ruta c:/ambiente/configuracion.
+     * En este método abrimos archivos properties del proyecto.
+     * @param Archivo Esla ruta del archivo.
      * @return El archivo de propiedades con la configuración.
-     * @throws FileNotFoundException si no encuentra el archivo en la ruta c:/ambiente/configuracion.
+     * @throws FileNotFoundException si no encuentra el archivo en la ruta.
      */
     public Properties getPropetiesFile(String Archivo) throws FileNotFoundException{
         Properties prop = new Properties();
@@ -71,6 +72,14 @@ public class genericGrid extends evidenceGrid {
         return datos;
     }
     
+    /**
+     * Este método nos ayuda abrir los driver con el navegador que se necesite.
+     * @param navegador Es el nombre dle navegador que vamos a levantar.
+     * @param config Es el acrhico de configuración properties.
+     * @return driver Es el RemoteWebDriver con el navegador abierto.
+     * @throws MalformedURLException Cuando no encunetra la ruta del driver.
+     * @throws InterruptedException Cuando no se puede iniciar el driver.
+     */
     public RemoteWebDriver openGridBrowser(String navegador, Properties config) throws MalformedURLException, InterruptedException{
         RemoteWebDriver driver = null;
         URL url=null;
@@ -127,6 +136,12 @@ public class genericGrid extends evidenceGrid {
             return driver;
         }
     
+    
+    /**
+     * Este método levanta el HUB de selenium grid y los nodos para cada navegador. 
+     * @throws InterruptedException No puede iniciar el driver.
+     * @throws FileNotFoundException No encuentra el driver del navegador.
+     */
     public void leventarNodosGrid() throws InterruptedException, FileNotFoundException{
         Properties Config = this.getPropetiesFile("configuracion\\configuracion.properties");
         try {
@@ -165,6 +180,9 @@ public class genericGrid extends evidenceGrid {
         }*/
     }
     
+    /**
+     * Este método cierra los nodos Selenium Grid que estan levantados.
+     */
     public void cierraNodosGrid(){
         try {
             String cmd = "cmd /c start cmd.exe /K TASKKILL /F /IM cmd.exe /T";
@@ -175,6 +193,18 @@ public class genericGrid extends evidenceGrid {
         
     }
     
+    /**
+     * Este método genera las evidencias de un script ejecutado.
+     * @param driver Es el remoteWebDriver que utilizamos.
+     * @param Escenario Es el nombre del caso de prueba para generar la evidencia.
+     * @param Resultado Es el resultado que se obtuvo en caso de prueba.
+     * @param contador Es el total de pasos ejecutados en el caso de prueba.
+     * @param Pasos Es el detalle de los pasos de prueba.
+     * @param RutaEvidencia Es la ruta donde se guardaron las capturas.
+     * @param Modulo Es el Módulo del casos de prueba.
+     * @param Version Es la versión del aplicativo.
+     * @param navegador Es el nombre del navegador donde se ejecuto el caso de prueba.
+     */
     public void GenerarEvidencias(RemoteWebDriver driver, String Escenario, String Resultado, int contador, List<String> Pasos, String RutaEvidencia, String Modulo, String Version, String navegador){
         try{
             System.out.println("Lista: "+Pasos);
@@ -202,7 +232,7 @@ public class genericGrid extends evidenceGrid {
     
     /**
      * En este método vamos a validar que dos mensajes sean iguales.
-     * @param driver 
+     * @param driver Es el remoteWebDriver donde se ejecuta la prueba. 
      * @param msjActual Es el valr del texto que se compara.
      * @param Elemento Es el elemento del que se va a comparr el texto.
      */
@@ -220,11 +250,19 @@ public class genericGrid extends evidenceGrid {
         return msj;
     }
     
-    public String AssertTrueElemento(RemoteWebDriver driver, String msjActual, String Elemento) throws InterruptedException{
+    /**
+     * En este método vamos a validar un like en un mensaje.
+     * @param driver Es el remoteWebDriver donde se ejecuta la prueba. 
+     * @param msjActual Es el valor del texto que se compara.
+     * @param Elemento Es el elemento del que se va a comparr el texto.
+     * @param like Es el texto que vamos a buscar en el mensaje.
+     * @return Regresa un Exitoso o Fallido dependiendo de la aserción.
+     */
+    public String AssertTrueElemento(RemoteWebDriver driver, String msjActual, String Elemento, String like) throws InterruptedException{
    	 String msj = "";
         try{
             this.dormir3seg();
-            Assert.assertTrue(this.obtenerTexto(driver, "id", Elemento).contains("se envió para su aprobación."));
+            Assert.assertTrue(this.obtenerTexto(driver, "id", Elemento).contains(like));
             msj = "Exitoso";
         }catch(AssertionError e){
             System.out.println("Mensaje Assert Fail: "+e);
@@ -339,8 +377,8 @@ public class genericGrid extends evidenceGrid {
     }
     /***
      * El método le da un tiempo de 10 segundos al webDriver.
-     * 
-     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
+     * @param driver Es el RemoteWebDriver de la ejecución.
+     * @param URL Es la url que vamos abrir en el driver.
      */
     public void abrirURl(RemoteWebDriver driver, String URL){
         try{
@@ -364,16 +402,31 @@ public class genericGrid extends evidenceGrid {
         return texto;
     }
     
-    public void Bajar_Scroll(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
+    /**
+     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void Bajar_Scroll(RemoteWebDriver driver) throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,1000)");
     }
     
-    public void Subir_Scroll(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
+    /**
+     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void Subir_Scroll(RemoteWebDriver driver) throws FileNotFoundException, InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,-1000)");
     }
     
+    /**
+     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
     public void Bajar_Tecla(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
     	Actions action = new Actions(driver);
     	action.keyDown(Keys.CONTROL).sendKeys(Keys.ENTER).perform(); 

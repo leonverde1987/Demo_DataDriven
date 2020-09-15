@@ -10,7 +10,11 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class steps_PO_Solicitudes_Compras_Leo extends genericGrid{
     
-    
+    /**
+     * Este método nos ayuda a regresar el nombre del navegador.
+     * @param Cadena Nombre completo del navegador segun el driver.
+     * @return Nombre corto del navegador.
+     */
     public String navegador(String Cadena){
         String navegador="";
         Cadena = Cadena.substring(17, Cadena.length());
@@ -48,19 +52,15 @@ public class steps_PO_Solicitudes_Compras_Leo extends genericGrid{
     }
     
     
-    
-
-    public steps_PO_Solicitudes_Compras_Leo() {
-    }
-    
     /**
      * Esté método nos ingresa contenido en un componente de texto.
      * @param driver Elemento WebDriver de la prueba.
      * @param usuario Es el valor del texto que se va ingresar al componente.
      * @param contador Es el controlador de pasos ejecutados.
+     * @param contrasena Es la contraseña para hacer Login.
      * @param Config Es el archivo de configuración de la prueba.
-     * @param Elementos Es el archivo con los elementos del aplicativo 
-     * @param Escenario Nombre del caso de prueba a ejecutar
+     * @param Elementos Es el archivo con los elementos del aplicativo. 
+     * @param Escenario Nombre del caso de prueba a ejecutar.
      * @throws FileNotFoundException Cacha cualquier excepción en la ejecución.
      * @throws InterruptedException Cacha si el archivo Config no existe. 
      */
@@ -129,10 +129,11 @@ public class steps_PO_Solicitudes_Compras_Leo extends genericGrid{
     /**
      * Est´s método nos ayuda a validar el mensaje del resultado esperado. 
      * @param driver Elemento WebDriver de la prueba.
-     * @param Datos Es el archivo de datos de la prueba.
+     * @param Dato Es el archivo de datos de la prueba.
      * @param contador Es el controlador de pasos ejecutados.
      * @param Config Es el archivo de configuración de la prueba.
      * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
      * @return Regresa el resultado Exitoso o Fallido y su detalle. 
      * @throws InterruptedException 
      */
@@ -153,7 +154,8 @@ public class steps_PO_Solicitudes_Compras_Leo extends genericGrid{
      * @param Config Es el archivo config de la prueba.
      * @param error Es el número de error detectado.
      * @param Escenario Es el nombre del caso de prueba.
-     * @throws InterruptedException Cacha cualquier excepción
+     * @param navegador Es el nombre del navegador donde se ejecuta la prueba.
+     * @throws InterruptedException Cacha cualquier excepción.
      */
     public void capturarEvidencia(RemoteWebDriver driver, Properties Config, int error, String Escenario, String navegador) throws InterruptedException{
         
@@ -166,8 +168,9 @@ public class steps_PO_Solicitudes_Compras_Leo extends genericGrid{
     
     /**
      * Esté método finaliza el Test Case y genera las evidencias.
+     * @param driver Es el nombre del driver.
      * @param Escenario Es el nombre del Test Case.
-     * @param Resultado Es el resultado del Testa Case Exitoso, Fallido o Ejecución Fallida
+     * @param Resultado Es el resultado del Testa Case Exitoso, Fallido o Ejecución Fallida.
      * @param contador Es el total de pasos ejecutados.
      * @param Pasos Es el detalle de los pasos ejecutados.
      * @param RutaEvidencia Es la ruta principal de la evidencia.
